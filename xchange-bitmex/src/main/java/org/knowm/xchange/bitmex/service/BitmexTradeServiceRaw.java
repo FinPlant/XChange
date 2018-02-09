@@ -72,4 +72,9 @@ public class BitmexTradeServiceRaw extends BitmexBaseService {
     return bitmex.placeOrder(apiKey, exchange.getNonceFactory(), signatureCreator, symbol, orderQuantity.intValue(),
             null, stopPrice, "Stop", executionInstructions);
   }
+
+  public BitmexPrivateOrder placeLimitOrder(String symbol, BigDecimal orderQuantity, BigDecimal price, String executionInstructions) {
+    return bitmex.placeOrder(apiKey, exchange.getNonceFactory(), signatureCreator, symbol, orderQuantity.intValue(),
+            price, "Limit", executionInstructions);
+  }
 }
