@@ -34,8 +34,6 @@ public class HuobiExchange extends BaseExchange implements Exchange {
         exchangeSpecification.setPort(80);
         exchangeSpecification.setExchangeName("Huobi");
         exchangeSpecification.setExchangeDescription("Huobi is a Chinese digital currency trading platform and exchange based in Beijing");
-        exchangeSpecification.setApiKey("ceaa7294-b2526391-47333a49-61fe3");
-        exchangeSpecification.setSecretKey("b1dec21c-e011cc2a-9275880a-330c3");
         return exchangeSpecification;
     }
 
