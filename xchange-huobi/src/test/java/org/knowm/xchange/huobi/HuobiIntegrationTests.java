@@ -5,6 +5,7 @@ import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeFactory;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
+import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.Order.OrderType;
 import org.knowm.xchange.dto.account.Balance;
 import org.knowm.xchange.dto.marketdata.Ticker;
@@ -20,6 +21,7 @@ import org.knowm.xchange.service.trade.TradeService;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,15 +44,19 @@ public class HuobiIntegrationTests {
 
     @Test
     public void getAccountTest() throws IOException {
-        Exchange exchange = ExchangeFactory.INSTANCE.createExchange(HuobiExchange.class.getName());
+        HuobiProperties properties = new HuobiProperties();
+        Exchange exchange = ExchangeFactory.INSTANCE.createExchange(HuobiExchange.class.getName(),
+                properties.getApiKey(), properties.getSecretKey());
         HuobiAccountService accountService = (HuobiAccountService) exchange.getAccountService();
         HuobiAccount[] accounts = accountService.getAccounts();
-        Arrays.toString(accounts);
+        System.out.println(Arrays.toString(accounts));
     }
 
     @Test
     public void getBalanceTest() throws IOException {
-        Exchange exchange = ExchangeFactory.INSTANCE.createExchange(HuobiExchange.class.getName());
+        HuobiProperties properties = new HuobiProperties();
+        Exchange exchange = ExchangeFactory.INSTANCE.createExchange(HuobiExchange.class.getName(),
+                properties.getApiKey(), properties.getSecretKey());
         AccountService accountService = exchange.getAccountService();
         Balance balance = accountService.getAccountInfo().getWallet().getBalance(Currency.USDT);
         System.out.println(balance.toString());
@@ -59,7 +65,9 @@ public class HuobiIntegrationTests {
 
     @Test
     public void getOpenOrdersTest() throws IOException {
-        Exchange exchange = ExchangeFactory.INSTANCE.createExchange(HuobiExchange.class.getName());
+        HuobiProperties properties = new HuobiProperties();
+        Exchange exchange = ExchangeFactory.INSTANCE.createExchange(HuobiExchange.class.getName(),
+                properties.getApiKey(), properties.getSecretKey());
         TradeService tradeService = exchange.getTradeService();
         OpenOrders openOrders = tradeService.getOpenOrders();
         System.out.println(openOrders.toString());
@@ -67,26 +75,31 @@ public class HuobiIntegrationTests {
     }
 
     @Test
-    public void cancelOrderTest() throws IOException {
-        Exchange exchange = ExchangeFactory.INSTANCE.createExchange(HuobiExchange.class.getName());
+    public void getOrderTest() throws IOException {
+        HuobiProperties properties = new HuobiProperties();
+        Exchange exchange = ExchangeFactory.INSTANCE.createExchange(HuobiExchange.class.getName(),
+                properties.getApiKey(), properties.getSecretKey());
         TradeService tradeService = exchange.getTradeService();
-        boolean result = tradeService.cancelOrder("123");
-        System.out.println(result);
+        Collection<Order> orders = tradeService.getOrder("2132866355");
+        System.out.println(orders.toString());
+        assertThat(orders).isNotNull();
     }
 
     @Test
     public void placeLimitOrderTest() throws IOException {
-        Exchange exchange = ExchangeFactory.INSTANCE.createExchange(HuobiExchange.class.getName());
+        HuobiProperties properties = new HuobiProperties();
+        Exchange exchange = ExchangeFactory.INSTANCE.createExchange(HuobiExchange.class.getName(),
+                properties.getApiKey(), properties.getSecretKey());
         TradeService tradeService = exchange.getTradeService();
         HuobiAccountService accountService = (HuobiAccountService) exchange.getAccountService();
         HuobiAccount[] accounts = accountService.getAccounts();
         LimitOrder limitOrder = new LimitOrder(
                 OrderType.BID,
-                new BigDecimal("1.01"),
-                new CurrencyPair("QTUM", "USDT"),
+                new BigDecimal("0.001"),
+                new CurrencyPair("BTC", "USDT"),
                 String.valueOf(accounts[0].getId()),
                 null,
-                new BigDecimal("30")
+                new BigDecimal("10000")
         );
         String orderId = tradeService.placeLimitOrder(limitOrder);
         System.out.println(orderId);
@@ -94,7 +107,9 @@ public class HuobiIntegrationTests {
 
     @Test
     public void placeMarketOrderTest() throws IOException {
-        Exchange exchange = ExchangeFactory.INSTANCE.createExchange(HuobiExchange.class.getName());
+        HuobiProperties properties = new HuobiProperties();
+        Exchange exchange = ExchangeFactory.INSTANCE.createExchange(HuobiExchange.class.getName(),
+                properties.getApiKey(), properties.getSecretKey());
         TradeService tradeService = exchange.getTradeService();
         HuobiAccountService accountService = (HuobiAccountService) exchange.getAccountService();
         HuobiAccount[] accounts = accountService.getAccounts();
@@ -107,6 +122,16 @@ public class HuobiIntegrationTests {
         );
         String orderId = tradeService.placeMarketOrder(marketOrder);
         System.out.println(orderId);
+    }
+
+    @Test
+    public void cancelOrderTest() throws IOException {
+        HuobiProperties properties = new HuobiProperties();
+        Exchange exchange = ExchangeFactory.INSTANCE.createExchange(HuobiExchange.class.getName(),
+                properties.getApiKey(), properties.getSecretKey());
+        TradeService tradeService = exchange.getTradeService();
+        boolean result = tradeService.cancelOrder("2134551697");
+        System.out.println(result);
     }
 
 }

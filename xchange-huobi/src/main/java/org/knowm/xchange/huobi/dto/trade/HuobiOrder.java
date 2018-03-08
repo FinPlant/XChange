@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class HuobiOpenOrder {
+public class HuobiOrder {
 
     private final long accountID;
     private final BigDecimal amount;
@@ -22,15 +22,15 @@ public class HuobiOpenOrder {
     private final String symbol;
     private final String type;
 
-    public HuobiOpenOrder(@JsonProperty("account-id") long accountID, @JsonProperty("amount") BigDecimal amount,
-                          @JsonProperty("canceled-at") Date canceledAt, @JsonProperty("created-at") Date createdAt,
-                          @JsonProperty("field-amount") BigDecimal fieldAmount,
-                          @JsonProperty("field-cash-amount") BigDecimal fieldCashAmount,
-                          @JsonProperty("field-fees") BigDecimal fieldFees,
-                          @JsonProperty("finished-at") Date finishedAt, @JsonProperty("id") long id,
-                          @JsonProperty("price") BigDecimal price, @JsonProperty("source") String source,
-                          @JsonProperty("state") String state, @JsonProperty("symbol") String symbol,
-                          @JsonProperty("type") String type) {
+    public HuobiOrder(@JsonProperty("account-id") long accountID, @JsonProperty("amount") BigDecimal amount,
+                      @JsonProperty("canceled-at") Date canceledAt, @JsonProperty("created-at") Date createdAt,
+                      @JsonProperty("field-amount") BigDecimal fieldAmount,
+                      @JsonProperty("field-cash-amount") BigDecimal fieldCashAmount,
+                      @JsonProperty("field-fees") BigDecimal fieldFees,
+                      @JsonProperty("finished-at") Date finishedAt, @JsonProperty("id") long id,
+                      @JsonProperty("price") BigDecimal price, @JsonProperty("source") String source,
+                      @JsonProperty("state") String state, @JsonProperty("symbol") String symbol,
+                      @JsonProperty("type") String type) {
         this.accountID = accountID;
         this.amount = amount;
         this.canceledAt = canceledAt;

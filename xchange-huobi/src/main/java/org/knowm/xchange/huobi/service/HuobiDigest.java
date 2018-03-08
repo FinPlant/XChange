@@ -6,6 +6,7 @@ import si.mazi.rescu.Params;
 import si.mazi.rescu.RestInvocation;
 
 import javax.crypto.Mac;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.QueryParam;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
@@ -32,7 +33,7 @@ public class HuobiDigest extends BaseParamsDigest {
         }
     }
 
-    public static HuobiDigest createInstance(String secretKey) {
+    static HuobiDigest createInstance(String secretKey) {
         return secretKey == null ? null : new HuobiDigest(secretKey);
     }
 
@@ -42,6 +43,7 @@ public class HuobiDigest extends BaseParamsDigest {
         String host = getHost(restInvocation.getBaseUrl());
         String method = "/" + restInvocation.getMethodPath();
         String query = Stream.of(
+                    restInvocation.getParamsMap().get(FormParam.class),
                     restInvocation.getParamsMap().get(QueryParam.class))
                     .map(Params::asHttpHeaders)
                     .map(Map::entrySet)
@@ -91,7 +93,5 @@ public class HuobiDigest extends BaseParamsDigest {
     public String toString() {
         return PLACEHOLDER;
     }
-
-    private static final char[] DIGITS = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
 }

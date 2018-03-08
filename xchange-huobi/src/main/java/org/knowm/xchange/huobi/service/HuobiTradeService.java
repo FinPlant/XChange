@@ -4,7 +4,7 @@ import org.knowm.xchange.Exchange;
 import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.trade.*;
 import org.knowm.xchange.huobi.HuobiAdapters;
-import org.knowm.xchange.huobi.dto.trade.HuobiOpenOrder;
+import org.knowm.xchange.huobi.dto.trade.HuobiOrder;
 import org.knowm.xchange.service.trade.TradeService;
 import org.knowm.xchange.service.trade.params.CancelOrderByIdParams;
 import org.knowm.xchange.service.trade.params.CancelOrderParams;
@@ -26,8 +26,8 @@ public class HuobiTradeService extends HuobiTradeServiceRaw implements TradeServ
     }
 
     @Override
-    public Collection<Order> getOrder(String... strings) throws IOException {
-        return null;
+    public Collection<Order> getOrder(String... orderIds) throws IOException {
+        return HuobiAdapters.adaptOrders(getHuobiOrder(orderIds));
     }
 
     @Override
@@ -42,16 +42,12 @@ public class HuobiTradeService extends HuobiTradeServiceRaw implements TradeServ
 
     @Override
     public boolean cancelOrder(String orderId) throws IOException {
-        // TODO if (orderId == result) then check for equity
         return cancelHuobiOrder(orderId).length() > 0;
     }
 
     @Override
     public boolean cancelOrder(CancelOrderParams cancelOrderParams) throws IOException {
-        if (cancelOrderParams instanceof CancelOrderByIdParams) {
-            return cancelOrder(((CancelOrderByIdParams)cancelOrderParams).getOrderId());
-        }
-        return false;
+        return cancelOrderParams instanceof CancelOrderByIdParams && cancelOrder(((CancelOrderByIdParams) cancelOrderParams).getOrderId());
     }
 
     @Override
@@ -66,7 +62,7 @@ public class HuobiTradeService extends HuobiTradeServiceRaw implements TradeServ
 
     @Override
     public OpenOrders getOpenOrders(OpenOrdersParams openOrdersParams) throws IOException {
-        HuobiOpenOrder[] openOrders = getHuobiOpenOrders();
+        HuobiOrder[] openOrders = getHuobiOpenOrders();
         return HuobiAdapters.adaptOpenOrders(openOrders);
     }
 

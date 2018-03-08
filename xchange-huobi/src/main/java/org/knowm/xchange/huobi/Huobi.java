@@ -5,9 +5,11 @@ import org.knowm.xchange.huobi.dto.account.results.HuobiBalanceResult;
 import org.knowm.xchange.huobi.dto.marketdata.results.HuobiAssetPairsResult;
 import org.knowm.xchange.huobi.dto.marketdata.results.HuobiAssetsResult;
 import org.knowm.xchange.huobi.dto.marketdata.results.HuobiTickerResult;
+import org.knowm.xchange.huobi.dto.trade.HuobiCreateOrderRequest;
 import org.knowm.xchange.huobi.dto.trade.results.HuobiCancelOrderResult;
-import org.knowm.xchange.huobi.dto.trade.results.HuobiOpenOrdersResult;
+import org.knowm.xchange.huobi.dto.trade.results.HuobiOrderInfoResult;
 import org.knowm.xchange.huobi.dto.trade.results.HuobiOrderResult;
+import org.knowm.xchange.huobi.dto.trade.results.HuobiOrdersResult;
 import si.mazi.rescu.ParamsDigest;
 
 import javax.ws.rs.*;
@@ -49,12 +51,21 @@ public interface Huobi {
 
     @GET
     @Path("v1/order/orders")
-    HuobiOpenOrdersResult getOpenOrders(@QueryParam("states") String states,
-                                        @QueryParam("AccessKeyId") String apiKey,
-                                        @QueryParam("SignatureMethod") String signatureMethod,
-                                        @QueryParam("SignatureVersion") int signatureVersion,
-                                        @QueryParam("Timestamp") String nonce,
-                                        @QueryParam("Signature") ParamsDigest signature) throws IOException;
+    HuobiOrdersResult getOpenOrders(@QueryParam("states") String states,
+                                    @QueryParam("AccessKeyId") String apiKey,
+                                    @QueryParam("SignatureMethod") String signatureMethod,
+                                    @QueryParam("SignatureVersion") int signatureVersion,
+                                    @QueryParam("Timestamp") String nonce,
+                                    @QueryParam("Signature") ParamsDigest signature) throws IOException;
+
+    @GET
+    @Path("v1/order/orders/{order-id}")
+    HuobiOrderInfoResult getOrder(@PathParam("order-id") String orderID,
+                                  @QueryParam("AccessKeyId") String apiKey,
+                                  @QueryParam("SignatureMethod") String signatureMethod,
+                                  @QueryParam("SignatureVersion") int signatureVersion,
+                                  @QueryParam("Timestamp") String nonce,
+                                  @QueryParam("Signature") ParamsDigest signature) throws IOException;
 
     @POST
     @Path("v1/order/orders/{order-id}/submitcancel")
@@ -67,12 +78,8 @@ public interface Huobi {
 
     @POST
     @Path("v1/order/orders/place")
-    HuobiOrderResult placeLimitOrder(@QueryParam("account-id") String accountID,
-                                     @QueryParam("amount") String amount,
-                                     @QueryParam("price") String price,
-                                     @QueryParam("source") String source,
-                                     @QueryParam("symbol") String symbol,
-                                     @QueryParam("type") String type,
+    @Consumes(MediaType.APPLICATION_JSON)
+    HuobiOrderResult placeLimitOrder(HuobiCreateOrderRequest body,
                                      @QueryParam("AccessKeyId") String apiKey,
                                      @QueryParam("SignatureMethod") String signatureMethod,
                                      @QueryParam("SignatureVersion") int signatureVersion,
@@ -81,11 +88,8 @@ public interface Huobi {
 
     @POST
     @Path("v1/order/orders/place")
-    HuobiOrderResult placeMarketOrder(@QueryParam("account-id") String accountID,
-                                      @QueryParam("amount") String amount,
-                                      @QueryParam("source") String source,
-                                      @QueryParam("symbol") String symbol,
-                                      @QueryParam("type") String type,
+    @Consumes(MediaType.APPLICATION_JSON)
+    HuobiOrderResult placeMarketOrder(HuobiCreateOrderRequest body,
                                       @QueryParam("AccessKeyId") String apiKey,
                                       @QueryParam("SignatureMethod") String signatureMethod,
                                       @QueryParam("SignatureVersion") int signatureVersion,

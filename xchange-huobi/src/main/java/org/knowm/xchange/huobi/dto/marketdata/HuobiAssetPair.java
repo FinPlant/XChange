@@ -38,18 +38,18 @@ public class HuobiAssetPair {
         return pricePrecision;
     }
 
-    public String getAmountPrecision() {
+    private String getAmountPrecision() {
         return amountPrecision;
     }
 
-    public String getSymbolPartition() {
+    private String getSymbolPartition() {
         return symbolPartition;
     }
 
     @Override
     public String toString() {
         return String.format("HuobiAssetPair [baseCurrency=%s, quoteCurrency=%s, pricePrecision=%s, " +
-                "amountPrecision=%s, symbolPartition=%s]", baseCurrency, quoteCurrency, pricePrecision, amountPrecision,
-                symbolPartition);
+                "amountPrecision=%s, symbolPartition=%s]", getBaseCurrency(), getQuoteCurrency(), getPricePrecision(),
+                getAmountPrecision(), getSymbolPartition());
     }
 }

@@ -21,20 +21,21 @@ public class HuobiAccount {
         return id;
     }
 
-    public String getState() {
+    private String getState() {
         return state;
     }
 
-    public String getType() {
+    private String getType() {
         return type;
     }
 
-    public String getUserID() {
+    private String getUserID() {
         return userID;
     }
 
     @Override
     public String toString() {
-        return String.format("[id = %s, state = %s, type = %s, userID = %s]", id, state, type, userID);
+        return String.format("[id = %s, state = %s, type = %s, userID = %s]", getId(), getState(), getType(),
+                getUserID());
     }
 }

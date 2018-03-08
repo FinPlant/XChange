@@ -7,7 +7,7 @@ public class HuobiPrice {
     private final BigDecimal price;
     private final BigDecimal volume;
 
-    public HuobiPrice( BigDecimal[] inputData ) {
+    HuobiPrice(BigDecimal[] inputData) {
         this.price = inputData[0];
         this.volume = inputData[1];
     }
@@ -16,12 +16,12 @@ public class HuobiPrice {
         return price;
     }
 
-    public BigDecimal getVolume() {
+    private BigDecimal getVolume() {
         return volume;
     }
 
     @Override
     public String toString() {
-        return String.format("HuobiPrice [price=%s, volume=%s]", price, volume);
+        return String.format("HuobiPrice [price=%s, volume=%s]", getPrice(), getVolume());
     }
 }

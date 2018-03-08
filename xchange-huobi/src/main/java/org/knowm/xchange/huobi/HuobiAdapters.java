@@ -18,7 +18,7 @@ import org.knowm.xchange.huobi.dto.account.HuobiBalanceSum;
 import org.knowm.xchange.huobi.dto.marketdata.HuobiAsset;
 import org.knowm.xchange.huobi.dto.marketdata.HuobiAssetPair;
 import org.knowm.xchange.huobi.dto.marketdata.HuobiTicker;
-import org.knowm.xchange.huobi.dto.trade.HuobiOpenOrder;
+import org.knowm.xchange.huobi.dto.trade.HuobiOrder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +41,7 @@ public class HuobiAdapters {
         return builder.build();
     }
 
-    public static ExchangeMetaData adaptToExchangeMetaData(HuobiAssetPair[] assetPairs, HuobiAsset[] assets) {
+    static ExchangeMetaData adaptToExchangeMetaData(HuobiAssetPair[] assetPairs, HuobiAsset[] assets) {
         HuobiUtils.setHuobiAssets(assets);
         HuobiUtils.setHuobiAssetPairs(assetPairs);
 
@@ -59,7 +59,7 @@ public class HuobiAdapters {
         return new ExchangeMetaData(pairs, currencies, null, null, false);
     }
 
-    public static CurrencyPair adaptCurrencyPair(String currencyPair) {
+    private static CurrencyPair adaptCurrencyPair(String currencyPair) {
         return HuobiUtils.translateHuobiCurrencyPair(currencyPair);
     }
 
@@ -68,7 +68,7 @@ public class HuobiAdapters {
                 new Integer(pair.getPricePrecision()));
     }
 
-    public static Currency adaptCurrency(String currency) {
+    private static Currency adaptCurrency(String currency) {
         return HuobiUtils.translateHuobiCurrencyCode(currency);
     }
 
@@ -100,9 +100,9 @@ public class HuobiAdapters {
         return map;
     }
 
-    public static OpenOrders adaptOpenOrders(HuobiOpenOrder[] openOrders) {
+    public static OpenOrders adaptOpenOrders(HuobiOrder[] openOrders) {
         List<LimitOrder> limitOrders = new ArrayList<>();
-        for(HuobiOpenOrder openOrder : openOrders) {
+        for(HuobiOrder openOrder : openOrders) {
             if (openOrder.isLimit()) {
                 limitOrders.add((LimitOrder) adaptOrder(openOrder));
             }
@@ -110,26 +110,30 @@ public class HuobiAdapters {
         return new OpenOrders(limitOrders);
     }
 
-    public static Order adaptOrder(HuobiOpenOrder openOrder) {
+    private static Order adaptOrder(HuobiOrder openOrder) {
         Order order = null;
         OrderType orderType = adaptOrderType(openOrder.getType());
         CurrencyPair currencyPair = adaptCurrencyPair(openOrder.getSymbol());
         if (openOrder.isMarket()) {
-            // TODO check if all fields are right
             order = new MarketOrder(orderType, openOrder.getAmount(), currencyPair);
         }
         if (openOrder.isLimit()) {
-            // TODO LimitOrder.originalAmount == openOrder.getAmount() ?
-            // TODO LimitOrder.timestamp == openOrder.getCreatedAt() ?
-            // TODO Check if all fields are right
             order = new LimitOrder(orderType, openOrder.getAmount(), currencyPair, String.valueOf(openOrder.getId()),
                     openOrder.getCreatedAt(), openOrder.getPrice());
         }
         return order;
     }
 
-    public static OrderType adaptOrderType(String orderType) {
+    private static OrderType adaptOrderType(String orderType) {
         return orderType.substring(1, 3).equals("buy") ? OrderType.BID : OrderType.ASK;
+    }
+
+    public static List<Order> adaptOrders(List<HuobiOrder> huobiOrders) {
+        List<Order> orders = new ArrayList<>();
+        for (HuobiOrder order : huobiOrders) {
+            orders.add(adaptOrder(order));
+        }
+        return orders;
     }
 
 }

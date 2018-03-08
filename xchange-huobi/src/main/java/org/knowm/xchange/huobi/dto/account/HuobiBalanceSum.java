@@ -16,7 +16,6 @@ public class HuobiBalanceSum {
     }
 
     public BigDecimal getTotal() {
-        // TODO: total = available (trade.balance) + frozen (frozen.balance) ?
         return available.add(frozen);
     }
 

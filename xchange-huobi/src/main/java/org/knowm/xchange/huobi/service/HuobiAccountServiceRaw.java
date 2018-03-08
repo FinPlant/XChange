@@ -11,14 +11,14 @@ import java.io.IOException;
 
 public class HuobiAccountServiceRaw extends HuobiBaseService {
 
-    public HuobiAccountServiceRaw(Exchange exchange) {
+    HuobiAccountServiceRaw(Exchange exchange) {
         super(exchange);
     }
 
-    public HuobiBalance getHuobiBalance(String accountID) throws IOException {
+    HuobiBalance getHuobiBalance(String accountID) throws IOException {
         HuobiBalanceResult huobiBalanceResult = huobi.getBalance(
                 accountID,
-                exchange.getDefaultExchangeSpecification().getApiKey(),
+                exchange.getExchangeSpecification().getApiKey(),
                 HuobiDigest.HMAC_SHA_256, 2,
                 HuobiUtils.createUTCDate(exchange.getNonceFactory()),
                 signatureCreator);
@@ -27,7 +27,7 @@ public class HuobiAccountServiceRaw extends HuobiBaseService {
 
     public HuobiAccount[] getAccounts() throws IOException {
         HuobiAccountResult huobiAccountResult = huobi.getAccount(
-                exchange.getDefaultExchangeSpecification().getApiKey(),
+                exchange.getExchangeSpecification().getApiKey(),
                 HuobiDigest.HMAC_SHA_256, 2,
                 HuobiUtils.createUTCDate(exchange.getNonceFactory()),
                 signatureCreator);

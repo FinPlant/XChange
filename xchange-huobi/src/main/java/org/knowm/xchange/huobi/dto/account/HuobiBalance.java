@@ -19,15 +19,15 @@ public class HuobiBalance {
         this.list = list;
     }
 
-    public long getId() {
+    private long getId() {
         return id;
     }
 
-    public String getState() {
+    private String getState() {
         return state;
     }
 
-    public String getType() {
+    private String getType() {
         return type;
     }
 
@@ -37,7 +37,7 @@ public class HuobiBalance {
 
     @Override
     public String toString() {
-        return String.format("HuobiBalance [id = %s, state = %s, type = %s, list = %s", id, state, type,
-                Arrays.toString(list));
+        return String.format("HuobiBalance [id = %s, state = %s, type = %s, list = %s", getId(), getState(), getType(),
+                Arrays.toString(getList()));
     }
 }
