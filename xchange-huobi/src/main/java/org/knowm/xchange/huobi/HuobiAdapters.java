@@ -3,6 +3,7 @@ package org.knowm.xchange.huobi;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order;
+import org.knowm.xchange.dto.Order.OrderStatus;
 import org.knowm.xchange.dto.Order.OrderType;
 import org.knowm.xchange.dto.account.Balance;
 import org.knowm.xchange.dto.account.Wallet;
@@ -121,7 +122,35 @@ public class HuobiAdapters {
             order = new LimitOrder(orderType, openOrder.getAmount(), currencyPair, String.valueOf(openOrder.getId()),
                     openOrder.getCreatedAt(), openOrder.getPrice());
         }
+        if (order != null) {
+            order.setOrderStatus(adaptOrderStatus(openOrder.getState()));
+        }
         return order;
+    }
+
+    private static OrderStatus adaptOrderStatus(String huobiStatus) {
+        OrderStatus result = OrderStatus.UNKNOWN;
+        switch (huobiStatus) {
+            case "pre-submitted":
+                break;
+            case "submitting":
+                break;
+            case "submitted":
+                break;
+            case "partial-filled":
+                result = OrderStatus.PARTIALLY_FILLED;
+                break;
+            case "partial-canceled":
+                result = OrderStatus.PARTIALLY_CANCELED;
+                break;
+            case "filled":
+                result = OrderStatus.FILLED;
+                break;
+            case "canceled":
+                result = OrderStatus.CANCELED;
+                break;
+        }
+        return result;
     }
 
     private static OrderType adaptOrderType(String orderType) {
