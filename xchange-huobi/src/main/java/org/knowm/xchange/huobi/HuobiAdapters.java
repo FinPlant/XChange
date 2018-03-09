@@ -132,10 +132,13 @@ public class HuobiAdapters {
         OrderStatus result = OrderStatus.UNKNOWN;
         switch (huobiStatus) {
             case "pre-submitted":
+                result = OrderStatus.PENDING_NEW;
                 break;
             case "submitting":
+                result = OrderStatus.PENDING_NEW;
                 break;
             case "submitted":
+                result = OrderStatus.NEW;
                 break;
             case "partial-filled":
                 result = OrderStatus.PARTIALLY_FILLED;
