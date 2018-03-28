@@ -1,7 +1,6 @@
 package org.knowm.xchange.bx.service;
 
 import org.knowm.xchange.Exchange;
-import org.knowm.xchange.bx.Bx;
 import org.knowm.xchange.bx.BxAuthenticated;
 import org.knowm.xchange.bx.dto.BxResult;
 import org.knowm.xchange.exceptions.ExchangeException;

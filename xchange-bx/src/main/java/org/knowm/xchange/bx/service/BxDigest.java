@@ -1,10 +1,8 @@
 package org.knowm.xchange.bx.service;
 
-import net.iharder.Base64;
 import org.knowm.xchange.service.BaseParamsDigest;
 import si.mazi.rescu.RestInvocation;
 
-import javax.crypto.Mac;
 import javax.ws.rs.FormParam;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
