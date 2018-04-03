@@ -1,6 +1,7 @@
 package org.knowm.xchange.bx.service;
 
 import org.knowm.xchange.Exchange;
+import org.knowm.xchange.bx.BxAdapters;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.dto.account.AccountInfo;
 import org.knowm.xchange.dto.account.FundingRecord;
@@ -20,7 +21,7 @@ public class BxAccountService extends BxAccountServiceRaw implements AccountServ
 
     @Override
     public AccountInfo getAccountInfo() throws IOException {
-        return null;
+        return new AccountInfo(BxAdapters.adaptWallet(getBxBalance()));
     }
 
     @Override

@@ -1,9 +1,11 @@
 package org.knowm.xchange.bx.service;
 
 import org.knowm.xchange.Exchange;
+import org.knowm.xchange.bx.BxAdapters;
 import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.trade.*;
 import org.knowm.xchange.service.trade.TradeService;
+import org.knowm.xchange.service.trade.params.CancelOrderByIdParams;
 import org.knowm.xchange.service.trade.params.CancelOrderParams;
 import org.knowm.xchange.service.trade.params.TradeHistoryParams;
 import org.knowm.xchange.service.trade.params.orders.OpenOrdersParams;
@@ -19,12 +21,12 @@ public class BxTradeService extends BxTradeServiceRaw implements TradeService {
 
     @Override
     public OpenOrders getOpenOrders() throws IOException {
-        return null;
+        return getOpenOrders(createOpenOrdersParams());
     }
 
     @Override
     public OpenOrders getOpenOrders(OpenOrdersParams openOrdersParams) throws IOException {
-        return null;
+        return BxAdapters.adaptOpenOrders(getBxOrders());
     }
 
     @Override
@@ -34,7 +36,7 @@ public class BxTradeService extends BxTradeServiceRaw implements TradeService {
 
     @Override
     public String placeLimitOrder(LimitOrder limitOrder) throws IOException {
-        return null;
+        return placeBxLimitOrder(limitOrder);
     }
 
     @Override
@@ -43,13 +45,14 @@ public class BxTradeService extends BxTradeServiceRaw implements TradeService {
     }
 
     @Override
-    public boolean cancelOrder(String s) throws IOException {
-        return false;
+    public boolean cancelOrder(String orderId) throws IOException {
+        return cancelBxOrder(orderId);
     }
 
     @Override
     public boolean cancelOrder(CancelOrderParams cancelOrderParams) throws IOException {
-        return false;
+        return cancelOrderParams instanceof CancelOrderByIdParams &&
+                cancelBxOrder(((CancelOrderByIdParams) cancelOrderParams).getOrderId());
     }
 
     @Override
@@ -68,8 +71,8 @@ public class BxTradeService extends BxTradeServiceRaw implements TradeService {
     }
 
     @Override
-    public Collection<Order> getOrder(String... strings) throws IOException {
-        return null;
+    public Collection<Order> getOrder(String... orderIds) throws IOException {
+        return getBxOrder(orderIds);
     }
 
 }

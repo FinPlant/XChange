@@ -66,4 +66,8 @@ public class BxUtils {
         return dateFormat.format(new Date(nonce.createValue()));
     }
 
+    public static Currency translateCurrency(String currency) {
+        return assetMap.get(currency);
+    }
+
 }

@@ -13,13 +13,10 @@ public class BxAccountServiceRaw extends BxBaseService {
         super(exchange);
     }
 
-    public void getBxBalance() throws IOException {
+    public Map<String, BxBalance> getBxBalance() throws IOException {
         BxBalanceResult result = bx.getBalance(exchange.getExchangeSpecification().getApiKey(),
                 exchange.getNonceFactory(), signatureCreator);
-        Map<String, BxBalance> balanceMap = checkResult(result);
-        for (String key : balanceMap.keySet()) {
-            System.out.println(String.format("%s %s", key, balanceMap.get(key)));
-        }
+        return checkResult(result);
     }
 
 }
