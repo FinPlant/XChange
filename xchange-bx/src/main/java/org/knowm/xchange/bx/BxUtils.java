@@ -16,10 +16,10 @@ import java.util.TimeZone;
 
 public class BxUtils {
 
-    private static Map<String, CurrencyPair> assetPairMap = new HashMap<>();
-    private static Map<CurrencyPair, String> assetPairMapReverse = new HashMap<>();
-    private static Map<String, Currency> assetMap = new HashMap<>();
-    private static Map<Currency, String> assetMapReverse = new HashMap<>();
+    private static final Map<String, CurrencyPair> assetPairMap = new HashMap<>();
+    private static final Map<CurrencyPair, String> assetPairMapReverse = new HashMap<>();
+    private static final Map<String, Currency> assetMap = new HashMap<>();
+    private static final Map<Currency, String> assetMapReverse = new HashMap<>();
 
     public static void setBxAssetPairs(Map<String, BxAssetPair> pairs) {
         for (String id : pairs.keySet()) {

@@ -57,7 +57,7 @@ public class BxTradeService extends BxTradeServiceRaw implements TradeService {
 
     @Override
     public UserTrades getTradeHistory(TradeHistoryParams tradeHistoryParams) throws IOException {
-        return null;
+        return BxAdapters.adaptUserTrades(getBxTradeHistory(tradeHistoryParams));
     }
 
     @Override

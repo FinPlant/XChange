@@ -3,7 +3,7 @@ package org.knowm.xchange.bx;
 import java.io.*;
 import java.util.Properties;
 
-public class BxProperties {
+class BxProperties {
 
     private String apiKey;
     private String secretKey;

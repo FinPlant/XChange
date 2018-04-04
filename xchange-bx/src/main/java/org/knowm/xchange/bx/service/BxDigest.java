@@ -7,7 +7,7 @@ import javax.ws.rs.FormParam;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class BxDigest extends BaseParamsDigest {
+class BxDigest extends BaseParamsDigest {
 
     private final String secretKey;
     private static final char[] DIGITS = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};

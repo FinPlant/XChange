@@ -3,7 +3,7 @@ package org.knowm.xchange.bx;
 import org.junit.Test;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeFactory;
-import org.knowm.xchange.bx.service.BxTradeServiceRaw;
+import org.knowm.xchange.bx.service.BxTradeHistoryParams;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order;
@@ -11,7 +11,9 @@ import org.knowm.xchange.dto.account.Balance;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.OpenOrders;
+import org.knowm.xchange.dto.trade.UserTrades;
 import org.knowm.xchange.service.marketdata.MarketDataService;
+import org.knowm.xchange.service.trade.TradeService;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -58,7 +60,7 @@ public class BxIntegrationTests {
         BxProperties properties = new BxProperties();
         Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BxExchange.class.getName(), properties.getApiKey(),
                 properties.getSecretKey());
-        boolean result = exchange.getTradeService().cancelOrder("8177407");
+        boolean result = exchange.getTradeService().cancelOrder("8200823");
         System.out.println(result);
     }
 
@@ -77,9 +79,20 @@ public class BxIntegrationTests {
         BxProperties properties = new BxProperties();
         Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BxExchange.class.getName(), properties.getApiKey(),
                 properties.getSecretKey());
-        Collection<Order> orders = exchange.getTradeService().getOrder("8176973", "8177040");
+        Collection<Order> orders = exchange.getTradeService().getOrder("8200823", "8177040");
         System.out.println(orders.toString());
         assertThat(orders).isNotNull();
+    }
+
+    @Test
+    public void getTradeHistoryMarTest() throws IOException {
+        BxProperties properties = new BxProperties();
+        Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BxExchange.class.getName(), properties.getApiKey(),
+                properties.getSecretKey());
+        TradeService tradeService = exchange.getTradeService();
+        BxTradeHistoryParams params = new BxTradeHistoryParams("2018-03-01 00:00:00", "2018-03-31 23:59:59");
+        UserTrades trades = tradeService.getTradeHistory(params);
+        System.out.println(trades);
     }
 
     @Test
@@ -87,8 +100,9 @@ public class BxIntegrationTests {
         BxProperties properties = new BxProperties();
         Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BxExchange.class.getName(), properties.getApiKey(),
                 properties.getSecretKey());
-        BxTradeServiceRaw tradeServiceRaw = (BxTradeServiceRaw) exchange.getTradeService();
-        tradeServiceRaw.getBxTradeHistory();
+        TradeService tradeService = exchange.getTradeService();
+        UserTrades trades = tradeService.getTradeHistory(null);
+        System.out.println(trades);
     }
 
     @Test

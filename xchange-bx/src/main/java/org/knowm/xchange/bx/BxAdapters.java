@@ -4,6 +4,7 @@ import org.knowm.xchange.bx.dto.account.BxBalance;
 import org.knowm.xchange.bx.dto.marketdata.BxAssetPair;
 import org.knowm.xchange.bx.dto.marketdata.BxTicker;
 import org.knowm.xchange.bx.dto.trade.BxOrder;
+import org.knowm.xchange.bx.dto.trade.BxTradeHistory;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order;
@@ -11,10 +12,13 @@ import org.knowm.xchange.dto.Order.OrderType;
 import org.knowm.xchange.dto.account.Balance;
 import org.knowm.xchange.dto.account.Wallet;
 import org.knowm.xchange.dto.marketdata.Ticker;
+import org.knowm.xchange.dto.marketdata.Trades;
 import org.knowm.xchange.dto.meta.CurrencyPairMetaData;
 import org.knowm.xchange.dto.meta.ExchangeMetaData;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.OpenOrders;
+import org.knowm.xchange.dto.trade.UserTrade;
+import org.knowm.xchange.dto.trade.UserTrades;
 import org.knowm.xchange.exceptions.ExchangeException;
 import si.mazi.rescu.SynchronizedValueFactory;
 
@@ -74,7 +78,7 @@ public class BxAdapters {
         }
     }
 
-    public static OrderType adaptBxOrderType(String orderType) {
+    private static OrderType adaptBxOrderType(String orderType) {
         OrderType result = null;
         if (orderType.equals(BUY)) {
             result = OrderType.BID;
@@ -92,7 +96,7 @@ public class BxAdapters {
         return new OpenOrders(limitOrders);
     }
 
-    public static Date adaptDate(String date) {
+    private static Date adaptDate(String date) {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date result;
         try {
@@ -132,8 +136,29 @@ public class BxAdapters {
         return new Wallet(balances);
     }
 
-    public static Currency adaptCurrency(String currency) {
+    private static Currency adaptCurrency(String currency) {
         return BxUtils.translateCurrency(currency);
+    }
+
+    public static UserTrades adaptUserTrades(BxTradeHistory[] histories) {
+        List<UserTrade> trades = new ArrayList<>();
+        for (BxTradeHistory history : histories) {
+            trades.add(adaptUserTrade(history));
+        }
+        return new UserTrades(trades, Trades.TradeSortType.SortByTimestamp);
+    }
+
+    private static UserTrade adaptUserTrade(BxTradeHistory history) {
+        return new UserTrade(
+                OrderType.BID,
+                history.getAmount(),
+                null,
+                null,
+                BxAdapters.adaptDate(history.getDate()),
+                String.valueOf(history.getTransactionId()),
+                String.valueOf(history.getRefId()),
+                null,
+                BxUtils.translateCurrency(history.getCurrency()));
     }
 
 }

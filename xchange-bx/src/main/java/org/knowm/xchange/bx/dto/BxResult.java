@@ -10,7 +10,7 @@ public class BxResult<V> {
     private final String error;
 
     @JsonCreator
-    public BxResult(V result, @JsonProperty("success") boolean success, @JsonProperty("error") String error) {
+    protected BxResult(V result, @JsonProperty("success") boolean success, @JsonProperty("error") String error) {
         this.result = result;
         this.success = success;
         this.error = error;
