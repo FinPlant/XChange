@@ -32,6 +32,8 @@ public class BxAdapters {
 
     private static final String BUY = "buy";
     private static final String SELL = "sell";
+    private static final String TRADE = "trade";
+    private static final String FEE = "fee";
 
     public static ExchangeMetaData adaptToExchangeMetaData(Map<String, BxAssetPair> assetPairs) {
         BxUtils.setBxAssetPairs(assetPairs);
@@ -140,25 +142,51 @@ public class BxAdapters {
         return BxUtils.translateCurrency(currency);
     }
 
-    public static UserTrades adaptUserTrades(BxTradeHistory[] histories) {
+    public static UserTrades adaptUserTrades(Map<String, List<BxTradeHistory>> historyMap) {
         List<UserTrade> trades = new ArrayList<>();
-        for (BxTradeHistory history : histories) {
-            trades.add(adaptUserTrade(history));
+        for (String key : historyMap.keySet()) {
+            UserTrade trade = adaptUserTrade(historyMap.get(key));
+            if (trade != null) {
+                trades.add(trade);
+            }
         }
         return new UserTrades(trades, Trades.TradeSortType.SortByTimestamp);
     }
 
-    private static UserTrade adaptUserTrade(BxTradeHistory history) {
-        return new UserTrade(
-                OrderType.BID,
-                history.getAmount(),
-                null,
-                null,
-                BxAdapters.adaptDate(history.getDate()),
-                String.valueOf(history.getTransactionId()),
-                String.valueOf(history.getRefId()),
-                null,
-                BxUtils.translateCurrency(history.getCurrency()));
+    private static UserTrade adaptUserTrade(List<BxTradeHistory> histories) {
+        UserTrade trade = null;
+        int indexOfFirstTrade = -1;
+        int indexOfSecondTrade = -1;
+        int indexOfFee = -1;
+        for (int i = 0; i < histories.size(); i++) {
+            if (histories.get(i).getType().equals(TRADE)) {
+                if (indexOfFirstTrade < 0) {
+                    indexOfFirstTrade = i;
+                } else if (indexOfSecondTrade < 0) {
+                    indexOfSecondTrade = i;
+                }
+            } else if ((histories.get(i).getType().equals(FEE)) && (indexOfFee < 0)) {
+                indexOfFee = i;
+            }
+        }
+        if ((indexOfFirstTrade > -1) && (indexOfSecondTrade > -1)) {
+            if (!histories.get(indexOfSecondTrade).getAmount().equals(BigDecimal.ZERO)) {
+                BxTradeHistory history = histories.get(indexOfSecondTrade);
+                trade = new UserTrade(
+                        (history.getAmount().compareTo(BigDecimal.ZERO) > 0) ? OrderType.BID : OrderType.ASK,
+                        history.getAmount().abs(),
+                        new CurrencyPair(histories.get(indexOfFirstTrade).getCurrency(), history.getCurrency()),
+                        histories.get(indexOfFirstTrade).getAmount().divide(
+                                history.getAmount(), 6, BigDecimal.ROUND_HALF_UP).abs(),
+                        adaptDate(history.getDate()),
+                        String.valueOf(history.getTransactionId()),
+                        String.valueOf(history.getRefId()),
+                        (indexOfFee < 0) ? null : histories.get(indexOfFee).getAmount().abs(),
+                        (indexOfFee < 0) ? null : BxUtils.translateCurrency(histories.get(indexOfFee).getCurrency())
+                );
+            }
+        }
+        return trade;
     }
 
 }

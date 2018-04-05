@@ -1,6 +1,7 @@
 package org.knowm.xchange.bx;
 
 import org.knowm.xchange.bx.dto.marketdata.BxAssetPair;
+import org.knowm.xchange.bx.dto.trade.BxTradeHistory;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.meta.CurrencyMetaData;
@@ -9,17 +10,14 @@ import si.mazi.rescu.SynchronizedValueFactory;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
 public class BxUtils {
 
-    private static final Map<String, CurrencyPair> assetPairMap = new HashMap<>();
-    private static final Map<CurrencyPair, String> assetPairMapReverse = new HashMap<>();
-    private static final Map<String, Currency> assetMap = new HashMap<>();
-    private static final Map<Currency, String> assetMapReverse = new HashMap<>();
+    private static Map<String, CurrencyPair> assetPairMap = new HashMap<>();
+    private static Map<CurrencyPair, String> assetPairMapReverse = new HashMap<>();
+    private static Map<String, Currency> assetMap = new HashMap<>();
+    private static Map<Currency, String> assetMapReverse = new HashMap<>();
 
     public static void setBxAssetPairs(Map<String, BxAssetPair> pairs) {
         for (String id : pairs.keySet()) {
@@ -68,6 +66,19 @@ public class BxUtils {
 
     public static Currency translateCurrency(String currency) {
         return assetMap.get(currency);
+    }
+
+    public static Map<String, List<BxTradeHistory>> prepareHistory(BxTradeHistory[] histories) {
+        Map<String, List<BxTradeHistory>> historyMap = new HashMap<>();
+        for (BxTradeHistory history : histories) {
+            List<BxTradeHistory> list = historyMap.computeIfAbsent(
+                    String.valueOf(history.getRefId()), k -> new ArrayList<>());
+            list.add(history);
+        }
+        for (String key : historyMap.keySet()) {
+            historyMap.get(key).sort(Comparator.comparingLong(BxTradeHistory::getTransactionId));
+        }
+        return historyMap;
     }
 
 }

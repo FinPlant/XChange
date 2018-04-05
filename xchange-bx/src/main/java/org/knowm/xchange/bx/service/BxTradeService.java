@@ -4,6 +4,7 @@ import org.knowm.xchange.Exchange;
 import org.knowm.xchange.bx.BxAdapters;
 import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.trade.*;
+import org.knowm.xchange.exceptions.NotAvailableFromExchangeException;
 import org.knowm.xchange.service.trade.TradeService;
 import org.knowm.xchange.service.trade.params.CancelOrderByIdParams;
 import org.knowm.xchange.service.trade.params.CancelOrderParams;
@@ -31,7 +32,7 @@ public class BxTradeService extends BxTradeServiceRaw implements TradeService {
 
     @Override
     public String placeMarketOrder(MarketOrder marketOrder) throws IOException {
-        return null;
+        throw new NotAvailableFromExchangeException();
     }
 
     @Override
@@ -41,7 +42,7 @@ public class BxTradeService extends BxTradeServiceRaw implements TradeService {
 
     @Override
     public String placeStopOrder(StopOrder stopOrder) throws IOException {
-        return null;
+        throw new NotAvailableFromExchangeException();
     }
 
     @Override

@@ -27,6 +27,7 @@ public class BxMarketDataServiceRaw extends BxBaseService {
         for (String key : tickerMap.keySet()) {
             if (key.equals(keyRequest)) {
                 result = tickerMap.get(key);
+                break;
             }
         }
         if (result != null) {

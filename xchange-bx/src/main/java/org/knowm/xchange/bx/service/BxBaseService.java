@@ -9,22 +9,22 @@ import org.knowm.xchange.service.BaseService;
 import si.mazi.rescu.ParamsDigest;
 import si.mazi.rescu.RestProxyFactory;
 
-class BxBaseService extends BaseExchangeService implements BaseService {
+public class BxBaseService extends BaseExchangeService implements BaseService {
 
     final BxAuthenticated bx;
     final ParamsDigest signatureCreator;
 
-    BxBaseService(Exchange exchange) {
+    public BxBaseService(Exchange exchange) {
         super(exchange);
         bx = RestProxyFactory.createProxy(BxAuthenticated.class, exchange.getExchangeSpecification().getSslUri(),
                 getClientConfig());
         signatureCreator = BxDigest.createInstance(exchange.getExchangeSpecification().getSecretKey());
     }
 
-    <R> R checkResult(BxResult<R> bxResult) {
+    public <R> R checkResult(BxResult<R> bxResult) {
         if (!bxResult.isSuccess()) {
             String bxError = bxResult.getError();
-            if (bxError.length() == 0) {
+            if (bxError.isEmpty()) {
                 throw new ExchangeException("Missing error message");
             } else {
                 throw new ExchangeException(bxError);

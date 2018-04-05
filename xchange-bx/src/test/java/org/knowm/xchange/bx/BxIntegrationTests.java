@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,13 +31,15 @@ public class BxIntegrationTests {
         MarketDataService marketDataService = exchange.getMarketDataService();
         Ticker ticker = marketDataService.getTicker(new CurrencyPair("THB", "BTC"));
         System.out.println(ticker.toString());
-        assertThat(this).isNotNull();
+        assertThat(ticker).isNotNull();
     }
 
     @Test
     public void getExchangeSymbolsTest() {
         Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BxExchange.class.getName());
-        System.out.println(Arrays.toString(exchange.getExchangeSymbols().toArray()));
+        List<CurrencyPair> pairs = exchange.getExchangeSymbols();
+        System.out.println(Arrays.toString(pairs.toArray()));
+        assertThat(pairs).isNotNull();
     }
 
     @Test
@@ -53,6 +56,7 @@ public class BxIntegrationTests {
                 new BigDecimal(20000));
         String orderId = exchange.getTradeService().placeLimitOrder(limitOrder);
         System.out.println(orderId);
+        assertThat(orderId).isNotBlank();
     }
 
     @Test
@@ -62,6 +66,7 @@ public class BxIntegrationTests {
                 properties.getSecretKey());
         boolean result = exchange.getTradeService().cancelOrder("8200823");
         System.out.println(result);
+        assertThat(result).isTrue();
     }
 
     @Test
@@ -93,6 +98,7 @@ public class BxIntegrationTests {
         BxTradeHistoryParams params = new BxTradeHistoryParams("2018-03-01 00:00:00", "2018-03-31 23:59:59");
         UserTrades trades = tradeService.getTradeHistory(params);
         System.out.println(trades);
+        assertThat(trades).isNotNull();
     }
 
     @Test
@@ -103,6 +109,7 @@ public class BxIntegrationTests {
         TradeService tradeService = exchange.getTradeService();
         UserTrades trades = tradeService.getTradeHistory(null);
         System.out.println(trades);
+        assertThat(trades).isNotNull();
     }
 
     @Test

@@ -8,13 +8,13 @@
     <parent>
         <groupId>org.knowm.xchange</groupId>
         <artifactId>xchange-parent</artifactId>
-        <version>4.3.4-SNAPSHOT</version>
+        <version>4.3.6-SNAPSHOT</version>
     </parent>
 
     <artifactId>xchange-bx</artifactId>
 
-    <name>XChange BX</name>
-    <description>XChange implementation for the BX Exchange</description>
+    <name>XChange BX.IN.TH</name>
+    <description>XChange implementation for the BX.IN.TH Exchange</description>
 
     <url>http://knowm.org/open-source/xchange/</url>
     <inceptionYear>2018</inceptionYear>
@@ -29,7 +29,7 @@
         <dependency>
             <groupId>org.knowm.xchange</groupId>
             <artifactId>xchange-core</artifactId>
-            <version>4.3.4-SNAPSHOT</version>
+            <version>4.3.6-SNAPSHOT</version>
         </dependency>
 
     </dependencies>

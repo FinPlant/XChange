@@ -15,26 +15,28 @@ import org.knowm.xchange.exceptions.ExchangeException;
 import org.knowm.xchange.service.trade.params.TradeHistoryParams;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
-class BxTradeServiceRaw extends BxBaseService {
+public class BxTradeServiceRaw extends BxBaseService {
 
-    private static final String TRADE = "trade";
-
-    BxTradeServiceRaw(Exchange exchange) {
+    public BxTradeServiceRaw(Exchange exchange) {
         super(exchange);
     }
 
-    boolean cancelBxOrder(String orderId) throws IOException {
-        BxCancelOrderResult result = bx.cancelOrder(null, orderId, exchange.getExchangeSpecification().getApiKey(),
-                exchange.getNonceFactory(), signatureCreator);
+    public boolean cancelBxOrder(String orderId) throws IOException {
+        BxCancelOrderResult result = bx.cancelOrder(
+                null,
+                orderId,
+                exchange.getExchangeSpecification().getApiKey(),
+                exchange.getNonceFactory(),
+                signatureCreator);
         checkResult(result);
         return result.isSuccess();
     }
 
-    BxTradeHistory[] getBxTradeHistory(TradeHistoryParams tradeHistoryParams) throws IOException {
+    public Map<String, List<BxTradeHistory>> getBxTradeHistory(TradeHistoryParams tradeHistoryParams)
+            throws IOException
+    {
         String startDate = null;
         String endDate = null;
         if (tradeHistoryParams != null) {
@@ -42,13 +44,13 @@ class BxTradeServiceRaw extends BxBaseService {
                 startDate = ((BxTradeHistoryParams) tradeHistoryParams).getStartDate();
                 endDate = ((BxTradeHistoryParams) tradeHistoryParams).getEndDate();
             } else {
-                throw new ExchangeException("Unsupported class of params!");
+                throw new ExchangeException("Unsupported class of params: " + tradeHistoryParams.getClass().getName());
             }
         }
-        BxTradeHistoryResult result = bx.getTradeHistory(null, TRADE, startDate,
+        BxTradeHistoryResult result = bx.getTradeHistory(null, null, startDate,
                 endDate, exchange.getExchangeSpecification().getApiKey(), exchange.getNonceFactory(),
                 signatureCreator);
-        return checkResult(result);
+        return BxUtils.prepareHistory(checkResult(result));
     }
 
     BxOrder[] getBxOrders() throws IOException {

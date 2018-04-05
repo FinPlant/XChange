@@ -5,6 +5,7 @@ import org.knowm.xchange.bx.BxAdapters;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.dto.account.AccountInfo;
 import org.knowm.xchange.dto.account.FundingRecord;
+import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
 import org.knowm.xchange.service.account.AccountService;
 import org.knowm.xchange.service.trade.params.TradeHistoryParams;
 import org.knowm.xchange.service.trade.params.WithdrawFundsParams;
@@ -26,27 +27,27 @@ public class BxAccountService extends BxAccountServiceRaw implements AccountServ
 
     @Override
     public String withdrawFunds(Currency currency, BigDecimal bigDecimal, String s) throws IOException {
-        return null;
+        throw new NotYetImplementedForExchangeException();
     }
 
     @Override
     public String withdrawFunds(WithdrawFundsParams withdrawFundsParams) throws IOException {
-        return null;
+        throw new NotYetImplementedForExchangeException();
     }
 
     @Override
     public String requestDepositAddress(Currency currency, String... strings) throws IOException {
-        return null;
+        throw new NotYetImplementedForExchangeException();
     }
 
     @Override
     public TradeHistoryParams createFundingHistoryParams() {
-        return null;
+        throw new NotYetImplementedForExchangeException();
     }
 
     @Override
     public List<FundingRecord> getFundingHistory(TradeHistoryParams tradeHistoryParams) throws IOException {
-        return null;
+        throw new NotYetImplementedForExchangeException();
     }
 
 }
