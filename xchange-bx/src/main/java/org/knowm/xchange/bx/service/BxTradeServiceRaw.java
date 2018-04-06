@@ -53,13 +53,13 @@ public class BxTradeServiceRaw extends BxBaseService {
         return BxUtils.prepareHistory(checkResult(result));
     }
 
-    BxOrder[] getBxOrders() throws IOException {
+    public BxOrder[] getBxOrders() throws IOException {
         BxOrdersResult result = bx.getOrders(null, null,
                 exchange.getExchangeSpecification().getApiKey(), exchange.getNonceFactory(), signatureCreator);
         return checkResult(result);
     }
 
-    Collection<Order> getBxOrder(String... orderIds) throws IOException {
+    public Collection<Order> getBxOrder(String... orderIds) throws IOException {
         List<Order> orders = new ArrayList<>();
         BxOrder[] bxOrders = getBxOrders();
         for (BxOrder order : bxOrders) {
@@ -72,7 +72,7 @@ public class BxTradeServiceRaw extends BxBaseService {
         return orders;
     }
 
-    String placeBxLimitOrder(LimitOrder limitOrder) throws IOException {
+    public String placeBxLimitOrder(LimitOrder limitOrder) throws IOException {
         BxCreateOrderResult result = bx.createOrder(
                 BxUtils.createBxCurrencyPair(limitOrder.getCurrencyPair()),
                 BxAdapters.adaptOrderType(limitOrder.getType()),

@@ -8,45 +8,25 @@ import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.account.Balance;
-import org.knowm.xchange.dto.marketdata.Ticker;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.OpenOrders;
 import org.knowm.xchange.dto.trade.UserTrades;
-import org.knowm.xchange.service.marketdata.MarketDataService;
 import org.knowm.xchange.service.trade.TradeService;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BxIntegrationTests {
-
-    @Test
-    public void getTickerTest() throws IOException {
-        Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BxExchange.class.getName());
-        MarketDataService marketDataService = exchange.getMarketDataService();
-        Ticker ticker = marketDataService.getTicker(new CurrencyPair("THB", "BTC"));
-        System.out.println(ticker.toString());
-        assertThat(ticker).isNotNull();
-    }
-
-    @Test
-    public void getExchangeSymbolsTest() {
-        Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BxExchange.class.getName());
-        List<CurrencyPair> pairs = exchange.getExchangeSymbols();
-        System.out.println(Arrays.toString(pairs.toArray()));
-        assertThat(pairs).isNotNull();
-    }
+public class BxPrivateApiIntegration {
 
     @Test
     public void placeLimitOrderTest() throws IOException {
         BxProperties properties = new BxProperties();
         Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BxExchange.class.getName(), properties.getApiKey(),
                 properties.getSecretKey());
+
         LimitOrder limitOrder = new LimitOrder(
                 Order.OrderType.BID,
                 new BigDecimal(10),
@@ -55,8 +35,20 @@ public class BxIntegrationTests {
                 null,
                 new BigDecimal(20000));
         String orderId = exchange.getTradeService().placeLimitOrder(limitOrder);
-        System.out.println(orderId);
+        System.out.println(String.format("Order created with ID %s", orderId));
         assertThat(orderId).isNotBlank();
+
+        OpenOrders openOrders = exchange.getTradeService().getOpenOrders();
+        System.out.println(openOrders.toString());
+        assertThat(openOrders).isNotNull();
+
+        Collection<Order> orders = exchange.getTradeService().getOrder(orderId);
+        System.out.println(orders.toString());
+        assertThat(orders).isNotNull();
+
+        boolean result = exchange.getTradeService().cancelOrder(orderId);
+        System.out.println(String.format("Order %s cancel result is %s", orderId, result));
+        assertThat(result).isTrue();
     }
 
     @Test
@@ -64,7 +56,7 @@ public class BxIntegrationTests {
         BxProperties properties = new BxProperties();
         Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BxExchange.class.getName(), properties.getApiKey(),
                 properties.getSecretKey());
-        boolean result = exchange.getTradeService().cancelOrder("8200823");
+        boolean result = exchange.getTradeService().cancelOrder("8221435");
         System.out.println(result);
         assertThat(result).isTrue();
     }

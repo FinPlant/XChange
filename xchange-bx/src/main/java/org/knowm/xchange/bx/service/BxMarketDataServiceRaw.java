@@ -20,7 +20,7 @@ public class BxMarketDataServiceRaw extends BxBaseService {
         return checkResult(bx.getAssetPairs());
     }
 
-    BxTicker getBxTicker(CurrencyPair currencyPair) throws IOException {
+    public BxTicker getBxTicker(CurrencyPair currencyPair) throws IOException {
         String keyRequest = BxUtils.createBxCurrencyPair(currencyPair);
         Map<String, BxTicker> tickerMap = checkResult(bx.getTicker());
         BxTicker result = null;

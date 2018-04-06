@@ -8,7 +8,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-class BxDigest extends BaseParamsDigest {
+public class BxDigest extends BaseParamsDigest {
 
     private final String secretKey;
 
@@ -17,7 +17,7 @@ class BxDigest extends BaseParamsDigest {
         this.secretKey = secretKey;
     }
 
-    static BxDigest createInstance(String secretKey) {
+    public static BxDigest createInstance(String secretKey) {
         return secretKey == null ? null : new BxDigest(secretKey);
     }
 

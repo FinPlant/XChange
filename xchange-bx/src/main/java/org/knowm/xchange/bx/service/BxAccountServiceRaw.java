@@ -7,13 +7,13 @@ import org.knowm.xchange.bx.dto.account.results.BxBalanceResult;
 import java.io.IOException;
 import java.util.Map;
 
-class BxAccountServiceRaw extends BxBaseService {
+public class BxAccountServiceRaw extends BxBaseService {
 
-    BxAccountServiceRaw(Exchange exchange) {
+    public BxAccountServiceRaw(Exchange exchange) {
         super(exchange);
     }
 
-    Map<String, BxBalance> getBxBalance() throws IOException {
+    public Map<String, BxBalance> getBxBalance() throws IOException {
         BxBalanceResult result = bx.getBalance(exchange.getExchangeSpecification().getApiKey(),
                 exchange.getNonceFactory(), signatureCreator);
         return checkResult(result);

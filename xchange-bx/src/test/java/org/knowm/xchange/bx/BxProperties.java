@@ -35,16 +35,20 @@ class BxProperties {
         output.close();
     }
 
+    private ExchangeException createException(String source) {
+        return new ExchangeException(String.format("Please specify %s in the file %s", source, fileName));
+    }
+
     public String getApiKey() {
         if (apiKey.isEmpty()) {
-            throw new ExchangeException("Please specify " + API + " in the file " + fileName + ".");
+            throw createException(API);
         }
         return apiKey;
     }
 
     public String getSecretKey() {
         if (secretKey.isEmpty()) {
-            throw new ExchangeException("Please specify " + SECRET + " in the file " + fileName + ".");
+            throw createException(SECRET);
         }
         return secretKey;
     }

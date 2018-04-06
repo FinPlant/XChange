@@ -11,8 +11,8 @@ import si.mazi.rescu.RestProxyFactory;
 
 public class BxBaseService extends BaseExchangeService implements BaseService {
 
-    final BxAuthenticated bx;
-    final ParamsDigest signatureCreator;
+    protected final BxAuthenticated bx;
+    protected final ParamsDigest signatureCreator;
 
     public BxBaseService(Exchange exchange) {
         super(exchange);

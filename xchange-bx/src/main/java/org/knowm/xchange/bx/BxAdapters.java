@@ -175,7 +175,7 @@ public class BxAdapters {
                 trade = new UserTrade(
                         (history.getAmount().compareTo(BigDecimal.ZERO) > 0) ? OrderType.BID : OrderType.ASK,
                         history.getAmount().abs(),
-                        new CurrencyPair(histories.get(indexOfFirstTrade).getCurrency(), history.getCurrency()),
+                        new CurrencyPair(history.getCurrency(), histories.get(indexOfFirstTrade).getCurrency()),
                         histories.get(indexOfFirstTrade).getAmount().divide(
                                 history.getAmount(), 6, BigDecimal.ROUND_HALF_UP).abs(),
                         adaptDate(history.getDate()),
