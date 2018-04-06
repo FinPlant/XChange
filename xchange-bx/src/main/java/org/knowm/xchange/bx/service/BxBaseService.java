@@ -11,26 +11,28 @@ import si.mazi.rescu.RestProxyFactory;
 
 public class BxBaseService extends BaseExchangeService implements BaseService {
 
-    protected final BxAuthenticated bx;
-    protected final ParamsDigest signatureCreator;
+  protected final BxAuthenticated bx;
+  protected final ParamsDigest signatureCreator;
 
-    public BxBaseService(Exchange exchange) {
-        super(exchange);
-        bx = RestProxyFactory.createProxy(BxAuthenticated.class, exchange.getExchangeSpecification().getSslUri(),
-                getClientConfig());
-        signatureCreator = BxDigest.createInstance(exchange.getExchangeSpecification().getSecretKey());
+  public BxBaseService(Exchange exchange) {
+    super(exchange);
+    bx =
+        RestProxyFactory.createProxy(
+            BxAuthenticated.class,
+            exchange.getExchangeSpecification().getSslUri(),
+            getClientConfig());
+    signatureCreator = BxDigest.createInstance(exchange.getExchangeSpecification().getSecretKey());
+  }
+
+  public <R> R checkResult(BxResult<R> bxResult) {
+    if (!bxResult.isSuccess()) {
+      String bxError = bxResult.getError();
+      if (bxError.isEmpty()) {
+        throw new ExchangeException("Missing error message");
+      } else {
+        throw new ExchangeException(bxError);
+      }
     }
-
-    public <R> R checkResult(BxResult<R> bxResult) {
-        if (!bxResult.isSuccess()) {
-            String bxError = bxResult.getError();
-            if (bxError.isEmpty()) {
-                throw new ExchangeException("Missing error message");
-            } else {
-                throw new ExchangeException(bxError);
-            }
-        }
-        return bxResult.getResult();
-    }
-
+    return bxResult.getResult();
+  }
 }

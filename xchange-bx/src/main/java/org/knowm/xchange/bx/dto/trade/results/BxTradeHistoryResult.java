@@ -6,10 +6,10 @@ import org.knowm.xchange.bx.dto.trade.BxTradeHistory;
 
 public class BxTradeHistoryResult extends BxResult<BxTradeHistory[]> {
 
-    public BxTradeHistoryResult(@JsonProperty("transactions") BxTradeHistory[] result,
-                                @JsonProperty("success") boolean success,
-                                @JsonProperty("error") String error) {
-        super(result, success, error);
-    }
-
+  public BxTradeHistoryResult(
+      @JsonProperty("transactions") BxTradeHistory[] result,
+      @JsonProperty("success") boolean success,
+      @JsonProperty("error") String error) {
+    super(result, success, error);
+  }
 }
