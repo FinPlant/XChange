@@ -23,19 +23,24 @@ public class BxTradeServiceRaw extends BxBaseService {
   }
 
   public boolean cancelBxOrder(String orderId) throws IOException {
+    String pairId = getBxOrderRaw(orderId)
+            .stream()
+            .findFirst()
+            .orElseThrow(() -> new IOException(String.format("Cant find pair id, for order id [%s]", orderId)))
+            .getPairingId();
     BxCancelOrderResult result =
-        bx.cancelOrder(
-            null,
-            orderId,
-            exchange.getExchangeSpecification().getApiKey(),
-            exchange.getNonceFactory(),
-            signatureCreator);
+            bx.cancelOrder(
+                    pairId,
+                    orderId,
+                    exchange.getExchangeSpecification().getApiKey(),
+                    exchange.getNonceFactory(),
+                    signatureCreator);
     checkResult(result);
     return result.isSuccess();
   }
 
   public Map<String, List<BxTradeHistory>> getBxTradeHistory(TradeHistoryParams tradeHistoryParams)
-      throws IOException {
+          throws IOException {
     String startDate = null;
     String endDate = null;
     if (tradeHistoryParams != null) {
@@ -44,29 +49,29 @@ public class BxTradeServiceRaw extends BxBaseService {
         endDate = ((BxTradeHistoryParams) tradeHistoryParams).getEndDate();
       } else {
         throw new ExchangeException(
-            "Unsupported class of params: " + tradeHistoryParams.getClass().getName());
+                "Unsupported class of params: " + tradeHistoryParams.getClass().getName());
       }
     }
     BxTradeHistoryResult result =
-        bx.getTradeHistory(
-            null,
-            null,
-            startDate,
-            endDate,
-            exchange.getExchangeSpecification().getApiKey(),
-            exchange.getNonceFactory(),
-            signatureCreator);
+            bx.getTradeHistory(
+                    null,
+                    null,
+                    startDate,
+                    endDate,
+                    exchange.getExchangeSpecification().getApiKey(),
+                    exchange.getNonceFactory(),
+                    signatureCreator);
     return BxUtils.prepareHistory(checkResult(result));
   }
 
   public BxOrder[] getBxOrders() throws IOException {
     BxOrdersResult result =
-        bx.getOrders(
-            null,
-            null,
-            exchange.getExchangeSpecification().getApiKey(),
-            exchange.getNonceFactory(),
-            signatureCreator);
+            bx.getOrders(
+                    null,
+                    null,
+                    exchange.getExchangeSpecification().getApiKey(),
+                    exchange.getNonceFactory(),
+                    signatureCreator);
     return checkResult(result);
   }
 
@@ -83,16 +88,30 @@ public class BxTradeServiceRaw extends BxBaseService {
     return orders;
   }
 
+  public Collection<BxOrder> getBxOrderRaw(String... orderIds) throws IOException {
+    List<BxOrder> orders = new ArrayList<>();
+    BxOrder[] bxOrders = getBxOrders();
+    for (BxOrder order : bxOrders) {
+      for (String orderId : orderIds) {
+        if (order.getOrderId().equals(orderId)) {
+          orders.add(order);
+        }
+      }
+    }
+    return orders;
+  }
+
+
   public String placeBxLimitOrder(LimitOrder limitOrder) throws IOException {
     BxCreateOrderResult result =
-        bx.createOrder(
-            BxUtils.createBxCurrencyPair(limitOrder.getCurrencyPair()),
-            BxAdapters.adaptOrderType(limitOrder.getType()),
-            limitOrder.getOriginalAmount().toString(),
-            limitOrder.getLimitPrice().toString(),
-            exchange.getExchangeSpecification().getApiKey(),
-            exchange.getNonceFactory(),
-            signatureCreator);
+            bx.createOrder(
+                    BxUtils.createBxCurrencyPair(limitOrder.getCurrencyPair()),
+                    BxAdapters.adaptOrderType(limitOrder.getType()),
+                    limitOrder.getOriginalAmount().toString(),
+                    limitOrder.getLimitPrice().toString(),
+                    exchange.getExchangeSpecification().getApiKey(),
+                    exchange.getNonceFactory(),
+                    signatureCreator);
     return checkResult(result);
   }
 }
