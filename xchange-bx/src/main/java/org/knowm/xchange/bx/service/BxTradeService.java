@@ -9,6 +9,7 @@ import org.knowm.xchange.dto.trade.*;
 import org.knowm.xchange.exceptions.NotAvailableFromExchangeException;
 import org.knowm.xchange.service.trade.TradeService;
 import org.knowm.xchange.service.trade.params.CancelOrderByIdParams;
+import org.knowm.xchange.service.trade.params.CancelOrderByPairAndIdParams;
 import org.knowm.xchange.service.trade.params.CancelOrderParams;
 import org.knowm.xchange.service.trade.params.TradeHistoryParams;
 import org.knowm.xchange.service.trade.params.orders.OpenOrdersParams;
@@ -45,14 +46,9 @@ public class BxTradeService extends BxTradeServiceRaw implements TradeService {
   }
 
   @Override
-  public boolean cancelOrder(String orderId) throws IOException {
-    return cancelBxOrder(orderId);
-  }
-
-  @Override
   public boolean cancelOrder(CancelOrderParams cancelOrderParams) throws IOException {
-    return cancelOrderParams instanceof CancelOrderByIdParams
-        && cancelBxOrder(((CancelOrderByIdParams) cancelOrderParams).getOrderId());
+    return cancelOrderParams instanceof CancelOrderByPairAndIdParams
+        && cancelBxOrder(((CancelOrderByPairAndIdParams) cancelOrderParams).getOrderId(), ((CancelOrderByPairAndIdParams) cancelOrderParams).getCurrencyPair());
   }
 
   @Override
