@@ -54,9 +54,11 @@ public class BxTradeService extends BxTradeServiceRaw implements TradeService {
     if (!(cancelOrderParams instanceof CancelOrderByPairAndIdParams)) {
       throw new IllegalArgumentException();
     }
+    CancelOrderByPairAndIdParams cancelOrderByPairAndIdParams = (CancelOrderByPairAndIdParams) cancelOrderParams;
     return cancelBxOrder(
-        ((CancelOrderByPairAndIdParams) cancelOrderParams).getOrderId(),
-        ((CancelOrderByPairAndIdParams) cancelOrderParams).getCurrencyPair());
+            cancelOrderByPairAndIdParams.getOrderId(),
+            cancelOrderByPairAndIdParams.getCurrencyPair()
+    );
   }
 
   @Override
