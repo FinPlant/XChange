@@ -144,11 +144,13 @@ public class HuobiAdapters {
               String.valueOf(openOrder.getId()),
               openOrder.getCreatedAt(),
               openOrder.getPrice());
-      if (openOrder.getFieldAmount().compareTo(BigDecimal.ZERO) > 0) {
+      if (openOrder.getFieldAmount().compareTo(BigDecimal.ZERO) == 0) {
+        order.setAveragePrice(BigDecimal.ZERO);
+      } else {
         order.setAveragePrice(
-                openOrder
-                        .getFieldCashAmount()
-                        .divide(openOrder.getFieldAmount(), 8, BigDecimal.ROUND_DOWN));
+            openOrder
+                .getFieldCashAmount()
+                .divide(openOrder.getFieldAmount(), 8, BigDecimal.ROUND_DOWN));
       }
     }
     if (order != null) {
