@@ -73,15 +73,14 @@ public class TradeServiceIntegration {
   public void orderPlaceGetCancelTest() throws IOException, InterruptedException {
     String orderId = tradeService.placeLimitOrder(order);
 
-    Thread.sleep(1000);
     tradeService.cancelOrder(orderId);
 
-    Thread.sleep(1000);
     List<Order> orders = (List<Order>) tradeService.getOrder(orderId);
 
     Assert.assertTrue("Order response must contain 1 order", orders.size() == 1);
 
-    Assert.assertTrue("Returned order id must be the same", orderId.equals(orders.get(0).getId()));
+    Assert.assertTrue(
+        "Returned order id must be the same as placed", orderId.equals(orders.get(0).getId()));
 
     Assert.assertTrue(
         "Returned order must be canceled", orders.get(0).getStatus() == Order.OrderStatus.CANCELED);
