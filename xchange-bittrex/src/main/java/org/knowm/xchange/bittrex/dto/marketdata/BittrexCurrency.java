@@ -10,6 +10,7 @@ public class BittrexCurrency {
   private final int minConfirmations;
   private final BigDecimal txFee;
   private final boolean isActive;
+  private final boolean isRestricted;
   private final String coinType;
   private final String baseAddress;
 
@@ -19,6 +20,7 @@ public class BittrexCurrency {
       @JsonProperty("MinConfirmation") int minConfirmations,
       @JsonProperty("TxFee") BigDecimal txFee,
       @JsonProperty("IsActive") boolean isActive,
+      @JsonProperty("IsRestricted") boolean isRestricted,
       @JsonProperty("CoinType") String coinType,
       @JsonProperty("BaseAddress") String baseAddress) {
 
@@ -27,6 +29,7 @@ public class BittrexCurrency {
     this.minConfirmations = minConfirmations;
     this.txFee = txFee;
     this.isActive = isActive;
+    this.isRestricted = isRestricted;
     this.coinType = coinType;
     this.baseAddress = baseAddress;
   }
@@ -54,6 +57,11 @@ public class BittrexCurrency {
   public boolean isActive() {
 
     return isActive;
+  }
+
+  public boolean isRestricted() {
+
+    return isRestricted;
   }
 
   public String getCoinType() {
