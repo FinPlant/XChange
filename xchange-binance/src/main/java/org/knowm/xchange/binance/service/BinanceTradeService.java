@@ -16,6 +16,13 @@ import org.knowm.xchange.exceptions.NotAvailableFromExchangeException;
 import org.knowm.xchange.service.trade.TradeService;
 import org.knowm.xchange.service.trade.params.*;
 import org.knowm.xchange.service.trade.params.orders.*;
+import org.knowm.xchange.service.trade.params.*;
+import org.knowm.xchange.service.trade.params.orders.DefaultOpenOrdersParam;
+import org.knowm.xchange.service.trade.params.orders.DefaultOpenOrdersParamCurrencyPair;
+import org.knowm.xchange.service.trade.params.orders.OpenOrdersParamCurrencyPair;
+import org.knowm.xchange.service.trade.params.orders.OpenOrdersParams;
+import org.knowm.xchange.service.trade.params.orders.OrderQueryParamCurrencyPair;
+import org.knowm.xchange.service.trade.params.orders.OrderQueryParams;
 import org.knowm.xchange.utils.Assert;
 
 import java.io.IOException;
@@ -264,11 +271,25 @@ public class BinanceTradeService extends BinanceTradeServiceRaw implements Trade
         }
       }
 
+      Long startTime = null;
+      Long endTime = null;
+      if (params instanceof TradeHistoryParamsTimeSpan) {
+        if (((TradeHistoryParamsTimeSpan) params).getStartTime() != null) {
+          startTime = ((TradeHistoryParamsTimeSpan) params).getStartTime().getTime();
+        }
+        if (((TradeHistoryParamsTimeSpan) params).getEndTime() != null) {
+          endTime = ((TradeHistoryParamsTimeSpan) params).getEndTime().getTime();
+        }
+      }
+      if ((fromId != null) && (startTime != null || endTime != null))
+        throw new ExchangeException(
+            "You should either specify the id from which you get the user trades from or start and end times. If you specify both, Binance will only honour the fromId parameter.");
+
       Long recvWindow =
           (Long)
               exchange.getExchangeSpecification().getExchangeSpecificParametersItem("recvWindow");
       List<BinanceTrade> binanceTrades =
-          super.myTrades(pair, limit, fromId, recvWindow, getTimestamp());
+          super.myTrades(pair, limit, startTime, endTime, fromId, recvWindow, getTimestamp());
       List<UserTrade> trades =
           binanceTrades.stream()
               .map(
