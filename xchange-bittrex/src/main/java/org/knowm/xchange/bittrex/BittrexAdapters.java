@@ -1,5 +1,8 @@
 package org.knowm.xchange.bittrex;
 
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
 import org.knowm.xchange.bittrex.dto.account.BittrexBalance;
 import org.knowm.xchange.bittrex.dto.account.BittrexDepositHistory;
 import org.knowm.xchange.bittrex.dto.account.BittrexWithdrawalHistory;
@@ -26,10 +29,6 @@ import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.UserTrade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public final class BittrexAdapters {
 
@@ -283,7 +282,7 @@ public final class BittrexAdapters {
               Optional.ofNullable(balance.getPending()).orElse(BigDecimal.ZERO)));
     }
 
-    return new Wallet(wallets);
+    return Wallet.Builder.from(wallets).build();
   }
 
   public static Balance adaptBalance(BittrexBalance balance) {

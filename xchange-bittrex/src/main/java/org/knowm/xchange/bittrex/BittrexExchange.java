@@ -1,5 +1,8 @@
 package org.knowm.xchange.bittrex;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import org.knowm.xchange.BaseExchange;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeSpecification;
@@ -18,10 +21,6 @@ import org.knowm.xchange.dto.meta.ExchangeMetaData;
 import org.knowm.xchange.exceptions.ExchangeException;
 import org.knowm.xchange.utils.nonce.AtomicLongIncrementalTime2013NonceFactory;
 import si.mazi.rescu.SynchronizedValueFactory;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 public class BittrexExchange extends BaseExchange implements Exchange {
 
