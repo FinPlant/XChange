@@ -87,7 +87,7 @@ public class CoinbaseProTradeServiceRaw extends CoinbaseProBaseService {
   }
 
   /** @deprecated Use @link {@link #placeCoinbaseProOrder} */
-  public CoinbaseProIdResponse placeCoinbaseProLimitOrder(LimitOrder limitOrder)
+  public CoinbaseProOrderResponse placeCoinbaseProLimitOrder(LimitOrder limitOrder)
       throws IOException {
 
     CoinbaseProPlaceLimitOrder coinbaseProLimitOrder =
@@ -96,7 +96,7 @@ public class CoinbaseProTradeServiceRaw extends CoinbaseProBaseService {
   }
 
   /** @deprecated Use {@link #placeCoinbaseProOrder} */
-  public CoinbaseProIdResponse placeCoinbaseProMarketOrder(MarketOrder marketOrder)
+  public CoinbaseProOrderResponse placeCoinbaseProMarketOrder(MarketOrder marketOrder)
       throws IOException {
 
     CoinbaseProPlaceMarketOrder coinbaseProMarketOrder =
@@ -105,13 +105,13 @@ public class CoinbaseProTradeServiceRaw extends CoinbaseProBaseService {
   }
 
   /** @deprecated Use {@link #placeCoinbaseProOrder} */
-  public CoinbaseProIdResponse placeCoinbaseProStopOrder(StopOrder stopOrder) throws IOException {
+  public CoinbaseProOrderResponse placeCoinbaseProStopOrder(StopOrder stopOrder) throws IOException {
     CoinbaseProPlaceOrder coinbaseProStopOrder =
         CoinbaseProAdapters.adaptCoinbaseProStopOrder(stopOrder);
     return placeCoinbaseProOrder(coinbaseProStopOrder);
   }
 
-  public CoinbaseProIdResponse placeCoinbaseProOrder(CoinbaseProPlaceOrder order)
+  public CoinbaseProOrderResponse placeCoinbaseProOrder(CoinbaseProPlaceOrder order)
       throws IOException {
     try {
       return coinbasePro.placeOrder(order, apiKey, digest, nonceFactory, passphrase);
