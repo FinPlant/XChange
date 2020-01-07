@@ -12,8 +12,8 @@ public class CoinbaseProOrderResponse {
     private final String productId;
     private final String side;
     private final String stp;
-    /*private final String type;
-    private final String timeInForce;*/
+    private final String type;
+    private final String timeInForce;
     private final boolean postOnly;
     //private final LocalDateTime createdAt;
     private final BigDecimal fillFees;
@@ -28,8 +28,8 @@ public class CoinbaseProOrderResponse {
                                     @JsonProperty("product_id") String productId,
                                     @JsonProperty("side") String side,
                                     @JsonProperty("stp") String stp,
-                                    /*@JsonProperty("type") String type,
-                                    @JsonProperty("time_in_force") String timeInForce,*/
+                                    @JsonProperty("type") String type,
+                                    @JsonProperty("time_in_force") String timeInForce,
                                     @JsonProperty("post_only") boolean postOnly,
                                     //@JsonProperty("created_at") LocalDateTime createdAt,
                                     @JsonProperty("fill_fees") BigDecimal fillFees,
@@ -43,8 +43,8 @@ public class CoinbaseProOrderResponse {
         this.productId = productId;
         this.side = side;
         this.stp = stp;
-        //this.type = type;
-        //this.timeInForce = timeInForce;
+        this.type = type;
+        this.timeInForce = timeInForce;
         this.postOnly = postOnly;
         //this.createdAt = createdAt;
         this.fillFees = fillFees;
@@ -78,13 +78,13 @@ public class CoinbaseProOrderResponse {
         return stp;
     }
 
-    /*public String getType() {
+    public String getType() {
         return type;
     }
 
     public String getTimeInForce() {
         return timeInForce;
-    }*/
+    }
 
     public boolean isPostOnly() {
         return postOnly;
@@ -130,9 +130,9 @@ public class CoinbaseProOrderResponse {
         builder.append("; stp=");
         builder.append(stp);
         builder.append("; type=");
-       // builder.append(type);
+        builder.append(type);
         builder.append("; timeInForce=");
-        //builder.append(timeInForce);
+        builder.append(timeInForce);
         builder.append("; postOnly=");
         builder.append(postOnly);
         builder.append("; createdAt=");
