@@ -3,7 +3,6 @@ package org.knowm.xchange.coinbasepro.dto.trade;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 public class CoinbaseProOrderResponse {
     private final String id;
@@ -15,11 +14,11 @@ public class CoinbaseProOrderResponse {
     private final String type;
     private final String timeInForce;
     private final boolean postOnly;
-    //private final LocalDateTime createdAt;
+    private final String createdAt;
     private final BigDecimal fillFees;
     private final BigDecimal fillSize;
     private final BigDecimal executedValue;
-    //private final String status;
+    private final String status;
     private final boolean settled;
 
     public CoinbaseProOrderResponse(@JsonProperty("id") String id,
@@ -31,11 +30,11 @@ public class CoinbaseProOrderResponse {
                                     @JsonProperty("type") String type,
                                     @JsonProperty("time_in_force") String timeInForce,
                                     @JsonProperty("post_only") boolean postOnly,
-                                    //@JsonProperty("created_at") LocalDateTime createdAt,
+                                    @JsonProperty("created_at") String createdAt,
                                     @JsonProperty("fill_fees") BigDecimal fillFees,
                                     @JsonProperty("filled_size") BigDecimal fillSize,
                                     @JsonProperty("executed_value") BigDecimal executedValue,
-                                    //@JsonProperty("status") String status,
+                                    @JsonProperty("status") String status,
                                     @JsonProperty("settled") boolean settled) {
         this.id = id;
         this.price = price;
@@ -46,11 +45,11 @@ public class CoinbaseProOrderResponse {
         this.type = type;
         this.timeInForce = timeInForce;
         this.postOnly = postOnly;
-        //this.createdAt = createdAt;
+        this.createdAt = createdAt;
         this.fillFees = fillFees;
         this.fillSize = fillSize;
         this.executedValue = executedValue;
-        //this.status = status;
+        this.status = status;
         this.settled = settled;
     }
 
@@ -90,9 +89,9 @@ public class CoinbaseProOrderResponse {
         return postOnly;
     }
 
-    /*public LocalDateTime getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
-    }*/
+    }
 
     public BigDecimal getFillFees() {
         return fillFees;
@@ -106,10 +105,10 @@ public class CoinbaseProOrderResponse {
         return executedValue;
     }
 
-    /*public String getStatus() {
+    public String getStatus() {
         return status;
     }
-*/
+
     public boolean isSettled() {
         return settled;
     }
@@ -136,7 +135,7 @@ public class CoinbaseProOrderResponse {
         builder.append("; postOnly=");
         builder.append(postOnly);
         builder.append("; createdAt=");
-        //builder.append(createdAt);
+        builder.append(createdAt);
         builder.append("; fillFees=");
         builder.append(fillFees);
         builder.append("; fillSize=");
@@ -144,7 +143,7 @@ public class CoinbaseProOrderResponse {
         builder.append("; executedValue=");
         builder.append(executedValue);
         builder.append("; status=");
-        //builder.append(status);
+        builder.append(status);
         builder.append("; settled=");
         builder.append(settled);
         builder.append("]");
