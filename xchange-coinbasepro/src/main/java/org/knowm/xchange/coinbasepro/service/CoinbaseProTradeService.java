@@ -7,8 +7,8 @@ import java.util.Collection;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.coinbasepro.CoinbaseProAdapters;
 import org.knowm.xchange.coinbasepro.dto.trade.CoinbaseProFill;
-import org.knowm.xchange.coinbasepro.dto.trade.CoinbaseProIdResponse;
 import org.knowm.xchange.coinbasepro.dto.trade.CoinbaseProOrder;
+import org.knowm.xchange.coinbasepro.dto.trade.CoinbaseProOrderResponse;
 import org.knowm.xchange.coinbasepro.dto.trade.CoinbaseProPlaceLimitOrder;
 import org.knowm.xchange.coinbasepro.dto.trade.CoinbaseProPlaceMarketOrder;
 import org.knowm.xchange.coinbasepro.dto.trade.CoinbaseProPlaceOrder;
@@ -56,7 +56,7 @@ public class CoinbaseProTradeService extends CoinbaseProTradeServiceRaw implemen
   public String placeMarketOrder(MarketOrder marketOrder) throws IOException {
     CoinbaseProPlaceMarketOrder coinbaseProMarketOrder =
         CoinbaseProAdapters.adaptCoinbaseProPlaceMarketOrder(marketOrder);
-    CoinbaseProIdResponse response = placeCoinbaseProOrder(coinbaseProMarketOrder);
+    CoinbaseProOrderResponse response = placeCoinbaseProOrder(coinbaseProMarketOrder);
     return response.getId();
   }
 
@@ -64,7 +64,7 @@ public class CoinbaseProTradeService extends CoinbaseProTradeServiceRaw implemen
   public String placeLimitOrder(LimitOrder limitOrder) throws IOException, FundsExceededException {
     CoinbaseProPlaceLimitOrder coinbaseProLimitOrder =
         CoinbaseProAdapters.adaptCoinbaseProPlaceLimitOrder(limitOrder);
-    CoinbaseProIdResponse response = placeCoinbaseProOrder(coinbaseProLimitOrder);
+    CoinbaseProOrderResponse response = placeCoinbaseProOrder(coinbaseProLimitOrder);
     return response.getId();
   }
 
@@ -72,7 +72,7 @@ public class CoinbaseProTradeService extends CoinbaseProTradeServiceRaw implemen
   public String placeStopOrder(StopOrder stopOrder) throws IOException, FundsExceededException {
     CoinbaseProPlaceOrder coinbaseProStopOrder =
         CoinbaseProAdapters.adaptCoinbaseProStopOrder(stopOrder);
-    CoinbaseProIdResponse response = placeCoinbaseProOrder(coinbaseProStopOrder);
+    CoinbaseProOrderResponse response = placeCoinbaseProOrder(coinbaseProStopOrder);
     return response.getId();
   }
 

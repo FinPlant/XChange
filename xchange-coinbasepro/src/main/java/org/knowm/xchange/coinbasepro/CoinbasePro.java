@@ -27,8 +27,8 @@ import org.knowm.xchange.coinbasepro.dto.marketdata.*;
 import org.knowm.xchange.coinbasepro.dto.trade.CoinbaseProAccount;
 import org.knowm.xchange.coinbasepro.dto.trade.CoinbaseProAccountAddress;
 import org.knowm.xchange.coinbasepro.dto.trade.CoinbaseProFill;
-import org.knowm.xchange.coinbasepro.dto.trade.CoinbaseProIdResponse;
 import org.knowm.xchange.coinbasepro.dto.trade.CoinbaseProOrder;
+import org.knowm.xchange.coinbasepro.dto.trade.CoinbaseProOrderResponse;
 import org.knowm.xchange.coinbasepro.dto.trade.CoinbaseProPlaceOrder;
 import org.knowm.xchange.coinbasepro.dto.trade.CoinbaseProSendMoneyResponse;
 import org.knowm.xchange.utils.DateUtils;
@@ -137,7 +137,7 @@ public interface CoinbasePro {
   @POST
   @Path("orders")
   @Consumes(MediaType.APPLICATION_JSON)
-  CoinbaseProIdResponse placeOrder(
+  CoinbaseProOrderResponse placeOrder(
       CoinbaseProPlaceOrder placeOrder,
       @HeaderParam("CB-ACCESS-KEY") String apiKey,
       @HeaderParam("CB-ACCESS-SIGN") ParamsDigest signer,
