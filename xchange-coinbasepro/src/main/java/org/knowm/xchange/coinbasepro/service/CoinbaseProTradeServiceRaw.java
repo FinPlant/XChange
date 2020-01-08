@@ -105,7 +105,8 @@ public class CoinbaseProTradeServiceRaw extends CoinbaseProBaseService {
   }
 
   /** @deprecated Use {@link #placeCoinbaseProOrder} */
-  public CoinbaseProOrderResponse placeCoinbaseProStopOrder(StopOrder stopOrder) throws IOException {
+  public CoinbaseProOrderResponse placeCoinbaseProStopOrder(StopOrder stopOrder)
+      throws IOException {
     CoinbaseProPlaceOrder coinbaseProStopOrder =
         CoinbaseProAdapters.adaptCoinbaseProStopOrder(stopOrder);
     return placeCoinbaseProOrder(coinbaseProStopOrder);
